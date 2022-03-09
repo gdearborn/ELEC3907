@@ -1,17 +1,4 @@
-#include <Arduino.h>
-#include <hp_BH1750.h>  // https://github.com/Starmbi/hp_BH1750
-#include <RTClib.h>     // https://github.com/adafruit/RTClib
-
-#define LIGHT_DEBUG
-#define LIGHT_RESET_PIN 13
-#define LIGHT_CONTROL_PIN 12
-#define LIGHT_THRESHOLD 100
-#define LIGHT_TARGET_DURATION_HOURS 0 //8
-#define LIGHT_TARGET_DURATION_MINUTES 1 //0
-#define LIGHT_TARGET_DURATION_SECONDS 1 //0
-#define LIGHT_TARGET_BUFFER_HOURS 23 //4
-#define LIGHT_TARGET_BUFFER_MINUTES 58 //0
-#define LIGHT_TARGET_BUFFER_SECONDS 50  //0
+#include "light.h"
 
 hp_BH1750 BH1750_1, BH1750_2;
 RTC_DS3231 rtc;
@@ -20,16 +7,6 @@ TimeSpan light_target_duration;
 TimeSpan light_current_duration;
 DateTime light_last_time;
 bool light_current_state;
-
-void setup(){
-    Serial.begin(115200);
-    while (!Serial); // wait for serial port to connect. Needed for native USB
-    light_setup();
-}
-
-void loop(){
-    light_loop();
-}
 
 void light_setup(){
     bool rtc_ready = false;
