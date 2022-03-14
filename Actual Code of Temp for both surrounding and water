@@ -20,14 +20,14 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 #define DHTTYPE DHT11
 DHT dht(PIN_SENSOR_DHT, DHTTYPE);
 // Data wire is plugged into port 2 on the Arduino
-#define ONE_WIRE_BUS 2
+//#define ONE_WIRE_BUS 2
 OneWire oneWire(PIN_SENSOR_DS);
 
 // Pass our oneWire reference to Dallas Temperature. 
 DallasTemperature sensors(&oneWire);
 
 // arrays to hold device address
-DeviceAddress insideThermometer;
+//DeviceAddress insideThermometer;
 
 void setup() {
   // set up the LCD's number of columns and rows: 
@@ -41,13 +41,13 @@ void setup() {
 
 
 void loop() {
-  
+  delay(1000);
   lcd.clear();
  //(2)
   buttonState7 = digitalRead( buttonpin7 );
   //buttonState13 = digitalRead(buttonpin13);
   // (3)
-  if (buttonState7 == HIGH) {
+  if (buttonState7 == LOW) {
 
     float h = dht.readHumidity();
     lcd.setCursor(0,0);
@@ -62,32 +62,35 @@ void loop() {
     delay(500);
   }
   // (4)
-  else if (buttonState7 == LOW) {
+  else {
     lcd.setCursor(0, 0);
     lcd.print("Water Temp:");
     sensors.requestTemperatures();
-    printTemp(insideThermometer);
-    delay(1000);
+    lcd.setCursor(2, 1);
+    lcd.print("Temp C: ");
+    lcd.print(sensors.getTempCByIndex(0));
+  
   }
   // (5)
-  else {
-    lcd.setCursor(0, 0);
-    lcd.print("Press a Button");
-  }
+  //else {
+    //lcd.setCursor(0, 0);
+    //lcd.print("Press a Button");
+  //}
 
  
 }
 
 
 // function to print the temperature for a device
-void printTemp(DeviceAddress deviceAddress)
-{
-  float tempC = sensors.getTempC(deviceAddress);
-  lcd.setCursor(2, 1);
-  lcd.print("Temp C: ");
-  lcd.print(tempC);
+//void printTemp(DeviceAddress deviceAddress)
+//{
+  //float tempC = sensors.getTempC(deviceAddress);
+  //lcd.setCursor(2, 1);
+  //lcd.print("Temp C: ");
+  //lcd.print(tempC);
   //lcd.setCursor(2, 1);
   //lcd.print("Temp F:");
   //lcd.print(DallasTemperature::toFahrenheit(tempC)); // Converts tempC to Fahrenheit
-}
+//}
+
 
