@@ -1,0 +1,68 @@
+#include <EEPROM.h>
+#include "GravityTDS.h"
+#include <LiquidCrystal_I2C.h>
+LiquidCrystal_I2C lcd(0x27, 16, 2);
+int phval = 0; // the pH meter Analog output is connected with the Arduino’s A0
+unsigned long int avgval; //Store the average value of the sensor feedback
+int buffer_arr[10],temp;
+#define TdsSensorPin A1
+GravityTDS gravityTds;
+ 
+float temperature = 25,tdsValue = 0;
+void setup() 
+{
+ Serial.begin(9600);
+  lcd.init(); 
+  lcd.begin(16, 2);
+  lcd.backlight();
+  //lcd.setCursor(0, 0);
+  //lcd.print("For more projects");
+  //lcd.setCursor(0, 1);
+  //lcd.print("CircuitSchools");
+  //delay(2000);
+  //lcd.clear();
+  //Serial.begin(115200);
+    //lcd.begin(16,2);
+    gravityTds.setPin(TdsSensorPin);
+    gravityTds.setAref(5.0);  //reference voltage on ADC, default 5.0V on Arduino UNO
+    gravityTds.setAdcRange(1024);  //1024 for 10bit ADC;4096 for 12bit ADC
+    gravityTds.begin();  //initialization
+}
+void loop() {
+ for(int i=0;i<10;i++) //Get 10 sample value from the sensor for smooth the value
+ { 
+ buffer_arr[i]=analogRead(A0);
+ delay(30);
+ }
+ for(int i=0;i<9;i++) //sort the analog from small to large
+ {
+ for(int j=i+1;j<10;j++)
+ {
+ if(buffer_arr[i]>buffer_arr[j])
+ {
+ temp=buffer_arr[i];
+ buffer_arr[i]=buffer_arr[j];
+ buffer_arr[j]=temp;
+ }
+ }
+ }
+ avgval=0;
+ for(int i=2;i<8;i++)   //take the average value of 6 center sample
+ avgval+=buffer_arr[i];
+ float volt=(float)avgval*5.0/1024/6; //convert the analog into millivolt
+ float ph_act = 3.5*volt; //convert the millivolt into pH value
+ lcd.setCursor(0, 0);
+ lcd.print(" pH Val:");
+ lcd.setCursor(8, 0);
+ lcd.print(ph_act);
+  gravityTds.setTemperature(temperature);  // set the temperature and execute temperature compensation
+    gravityTds.update();  //sample and calculate
+    tdsValue = gravityTds.getTdsValue();  // then get the value
+    Serial.print(tdsValue,0);
+    Serial.println("ppm");
+ lcd.setCursor(0,1);
+ lcd.print("TDS Val:");
+ lcd.print(tdsValue);
+ lcd.print("PPM");
+ delay(1000);
+}
