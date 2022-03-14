@@ -12,7 +12,7 @@
 #define PIN_SENSOR_DS 8
 #define PIN_SENSOR_DHT 9
 #define DHTTYPE DHT11
-#define ONE_WIRE_BUS 2
+//#define ONE_WIRE_BUS 2
 
 //(1)
 int buttonpin7 = 7;
@@ -31,7 +31,7 @@ OneWire oneWire(PIN_SENSOR_DS);
 DallasTemperature sensors(&oneWire);
 
 // arrays to hold device address
-DeviceAddress insideThermometer;
+//DeviceAddress insideThermometer;
 
 void temp_humid_setup();
 void temp_humid_loop();
