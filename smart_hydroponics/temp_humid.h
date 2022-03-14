@@ -1,10 +1,10 @@
 #ifndef _TEMP_HUMID_H
 #define _TEMP_HUMID_H
 
-#include <LiquidCrystal.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <DHT.h>
+#include <LiquidCrystal.h>      // LiquidCrystal (Arduino) https://www.arduino.cc/en/Reference/LiquidCrystal
+#include <OneWire.h>            // OneWire (Paul Stoffgren) https://github.com/PaulStoffregen/OneWire
+#include <DallasTemperature.h>  // DallasTemperature (Miles Burton) https://github.com/milesburton/Arduino-Temperature-Control-Library
+#include <DHT.h>                // DHT sensor library (Adafruit) https://github.com/adafruit/DHT-sensor-library
 
 #define TEMP_DEBUG
 #define HUMID_DEBUG

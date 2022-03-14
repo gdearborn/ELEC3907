@@ -1,8 +1,8 @@
 #ifndef _LIGHT_H
 #define _LIGHT_H
 
-#include <hp_BH1750.h>  // https://github.com/Starmbi/hp_BH1750
-#include <RTClib.h>     // https://github.com/adafruit/RTClib
+#include <hp_BH1750.h>  // hp_BH1750 (Stefan Armborst) https://github.com/Starmbi/hp_BH1750
+#include <RTClib.h>     // RTClib (Adafruit) https://github.com/adafruit/RTClib
 
 #define LIGHT_DEBUG
 #define LIGHT_RESET_PIN 13
