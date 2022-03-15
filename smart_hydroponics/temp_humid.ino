@@ -1,6 +1,7 @@
 #include "temp_humid.h"
 
 void temp_humid_setup(){
+    lcd.begin(16, 2);  // set up the LCD's number of columns and rows
     dht.begin();
     sensors.begin();
 #ifdef TEMP_DEBUG
