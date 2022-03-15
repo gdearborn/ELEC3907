@@ -4,12 +4,6 @@ void temp_humid_setup(){
     lcd.begin(16, 2);  // set up the LCD's number of columns and rows
     dht.begin();
     sensors.begin();
-#ifdef TEMP_DEBUG
-    Serial.println("Temperature debug setup message");
-#endif
-#ifdef HUMID_DEBUG
-    Serial.println("Humidity debug setup message");
-#endif
 }
 
 void temp_humid_loop(){
@@ -21,11 +15,19 @@ void temp_humid_loop(){
 //(3)
     if (buttonState7 == LOW) {
         float h = dht.readHumidity();
+#ifdef HUMID_DEBUG
+        Serial.print("DHT Humidity: ");
+        Serial.println(h, 2);
+#endif
         lcd.setCursor(0,0);
         lcd.print("Humidity:");
         lcd.print(h,2);
         //read temperature in Fahrenheit
         float f = dht.readTemperature(true);
+#ifdef TEMP_DEBUG
+        Serial.print("DHT Temperature: ");
+        Serial.println(f, 2);
+#endif
         lcd.setCursor(0,1);
         lcd.print("Temp:");
         lcd.print(f,2);
@@ -42,12 +44,6 @@ void temp_humid_loop(){
     //    lcd.setCursor(0, 0);
     //    lcd.print("Press a Button");
     }
-#ifdef TEMP_DEBUG
-    Serial.println("Temperature debug loop message");
-#endif
-#ifdef HUMID_DEBUG
-    Serial.println("Humidity debug loop message");
-#endif
 }
 
 //void printTemp(DeviceAddress deviceAddress){

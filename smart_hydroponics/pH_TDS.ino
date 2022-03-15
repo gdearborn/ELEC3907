@@ -16,12 +16,6 @@ void ph_tds_setup(){
     gravityTds.setAref(5.0);  //reference voltage on ADC, default 5.0V on Arduino UNO
     gravityTds.setAdcRange(1024);  //1024 for 10bit ADC;4096 for 12bit ADC
     gravityTds.begin();  //initialization
-#ifdef PH_DEBUG
-    Serial.println("pH debug setup message");
-#endif
-#ifdef TDS_DEBUG
-    Serial.println("TDS debug setup message");
-#endif
 }
 
 void ph_tds_loop(){
@@ -44,6 +38,10 @@ void ph_tds_loop(){
     }
     float volt=(float)avgval*5.0/1024/6; //convert the analog into millivolt
     float ph_act = 3.5*volt; //convert the millivolt into pH value
+#ifdef PH_DEBUG
+    Serial.print("pH: ");
+    Serial.println(ph_act, 2);
+#endif
     lcd_i2c.setCursor(0, 0);
     lcd_i2c.print(" pH Val:");
     lcd_i2c.setCursor(8, 0);
@@ -51,17 +49,13 @@ void ph_tds_loop(){
     gravityTds.setTemperature(temperature);  // set the temperature and execute temperature compensation
     gravityTds.update();  //sample and calculate
     tdsValue = gravityTds.getTdsValue();  // then get the value
+#ifdef TDS_DEBUG
     Serial.print(tdsValue,0);
     Serial.println("ppm");
+#endif
     lcd_i2c.setCursor(0,1);
     lcd_i2c.print("TDS Val:");
     lcd_i2c.print(tdsValue);
     lcd_i2c.print("PPM");
     delay(1000);
-#ifdef PH_DEBUG
-    Serial.println("pH debug loop message");
-#endif
-#ifdef TDS_DEBUG
-    Serial.println("TDS debug loop message");
-#endif
 }
